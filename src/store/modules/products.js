@@ -3,52 +3,48 @@ import axios from 'axios';
 export default {
     namespaced: true,
     state: () => ({
-        items: [],
-        isLoading: false,
-        errorMessage: '',
+        products: [],
+        selectedCategory: '',
+        loading: false,
+        error: null
     }),
-    mutations: {
-        SET_LOADING(state, status) {
-            state.isLoading = status;
-        },
-        SET_PRODUCTS(state, products) {
-            state.items = products;
-        },
-        SET_ERROR(state, message) {
-            state.errorMessage = message;
-        },
+    getters: {
+        filteredProducts(state) {
+            if (!state.selectedCategory) {
+                return state.products;
+            }
+            return state.products.filter(
+                (p) => p.category === state.selectedCategory
+            );
+        }
     },
     actions: {
         async fetchProducts({ commit }) {
             commit('SET_LOADING', true);
-            commit('SET_ERROR', '');
-
             try {
-                const response = await axios.get('https://fakestoreapi.com/products');
-
-                // Adaptamos el precio a Peso Chileno (CLP)
-                const formattedProducts = response.data.map((prod) => ({
-                    ...prod,
-                    price: Math.round(prod.price * 950),
-                }));
-
-                commit('SET_PRODUCTS', formattedProducts);
+                const response = await axios.get('/products.json');
+                commit('SET_PRODUCTS', Array.isArray(response.data) ? response.data : []);
+                commit('SET_ERROR', null);
             } catch (error) {
-                console.error('Error en Vuex fetchProducts:', error);
+                console.error('Error al obtener productos:', error);
                 commit('SET_ERROR', 'Ocurrió un error al obtener el catálogo desde el servidor.');
             } finally {
                 commit('SET_LOADING', false);
             }
-        },
+        }
     },
-    getters: {
-        allProducts: (state) => state.items,
-        isLoading: (state) => state.isLoading,
-        errorMessage: (state) => state.errorMessage,
-        // Extraer categorías dinámicas únicas
-        categories: (state) => {
-            const cats = state.items.map((item) => item.category);
-            return [...new Set(cats)];
+    mutations: {
+        SET_PRODUCTS(state, products) {
+            state.products = products;
         },
-    },
+        SET_CATEGORY_FILTER(state, category) {
+            state.selectedCategory = category;
+        },
+        SET_LOADING(state, loading) {
+            state.loading = loading;
+        },
+        SET_ERROR(state, error) {
+            state.error = error;
+        }
+    }
 };

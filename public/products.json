@@ -1,0 +1,42 @@
+[
+    {
+        "id": 1,
+        "title": "Polera de Algodón Nova",
+        "price": 15990,
+        "description": "Polera 100% algodón de calce regular.",
+        "category": "men's clothing",
+        "image": "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=300&auto=format&fit=crop&q=80"
+    },
+    {
+        "id": 2,
+        "title": "Polera Casual Slim Fit",
+        "price": 21840,
+        "description": "Polera manga larga estilo raglán.",
+        "category": "men's clothing",
+        "image": "https://images.unsplash.com/photo-1618354691373-d851c5c3a990?w=300&auto=format&fit=crop&q=80"
+    },
+    {
+        "id": 3,
+        "title": "Chaqueta de Cuerina",
+        "price": 43690,
+        "description": "Chaqueta de cuero sintético con cierre.",
+        "category": "men's clothing",
+        "image": "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=300&auto=format&fit=crop&q=80"
+    },
+    {
+        "id": 4,
+        "title": "Collar Elegante Silver",
+        "price": 32990,
+        "description": "Collar de plata para uso formal o casual.",
+        "category": "jewelery",
+        "image": "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=300&auto=format&fit=crop&q=80"
+    },
+    {
+        "id": 5,
+        "title": "Audífonos Bluetooth Pro",
+        "price": 59990,
+        "description": "Audífonos inalámbricos con cancelación de ruido.",
+        "category": "electronics",
+        "image": "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=300&auto=format&fit=crop&q=80"
+    }
+]

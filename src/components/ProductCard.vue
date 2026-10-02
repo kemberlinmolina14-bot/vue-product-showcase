@@ -1,26 +1,14 @@
 <template>
-    <el-card class="product-card" :body-style="{ padding: '15px' }" shadow="hover">
-        <div class="image-container">
-            <img :src="product.image" :alt="product.title" class="product-image" />
+    <el-card class="product-card" :body-style="{ padding: '15px' }">
+        <div class="image-wrapper">
+            <img :src="product.image" :alt="product.title" class="product-image" @error="handleImageError" />
         </div>
-
         <div class="product-info">
-            <el-tag size="small" type="info" class="category-tag">
-                {{ product.category }}
-            </el-tag>
-
-            <h3 class="product-title" :title="product.title">{{ product.title }}</h3>
-
-            <div class="rating-container" v-if="product.rating">
-                <el-rate v-model="product.rating.rate" disabled show-score text-color="#ff9900"
-                    score-template="{value}" />
-            </div>
-
-            <div class="card-footer">
-                <span class="product-price">{{ formattedPrice }}</span>
-                <el-button :type="isFavorite ? 'danger' : 'default'" :icon="isFavorite ? 'StarFilled' : 'Star'" circle
-                    class="favorite-btn" @click="toggleFavorite" />
-            </div>
+            <h3 class="product-title">{{ product.title }}</h3>
+            <p class="product-price">{{ formattedPrice }}</p>
+            <el-button type="danger" plain size="small" @click="toggleFavorite">
+                ♥ {{ isFavorite ? 'En Favoritos' : 'Agregar a Favoritos' }}
+            </el-button>
         </div>
     </el-card>
 </template>
@@ -32,49 +20,45 @@ import { useStore } from 'vuex';
 const props = defineProps({
     product: {
         type: Object,
-        required: true,
-    },
+        required: true
+    }
 });
 
 const store = useStore();
 
-const isFavorite = computed(() =>
-    store.getters['favorites/isFavorite'](props.product.id)
-);
+const isFavorite = computed(() => {
+    return store.state.favorites?.items?.some(item => item.id === props.product.id) || false;
+});
 
-// Formateo de precio en formato peso chileno
 const formattedPrice = computed(() => {
-    const priceCLP = Math.round(props.product.price * 950);
-    return new Intl.NumberFormat('es-CL', {
-        style: 'currency',
-        currency: 'CLP',
-        maximumFractionDigits: 0,
-    }).format(priceCLP);
+    return `$${props.product.price.toLocaleString('es-CL')}`;
 });
 
 const toggleFavorite = () => {
     store.dispatch('favorites/toggleFavorite', props.product);
 };
+
+const handleImageError = (e) => {
+    // Imagen de respaldo local o SVG liviano si la red falla
+    e.target.src = 'https://via.placeholder.com/200x200?text=Producto';
+};
 </script>
 
 <style scoped>
 .product-card {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    transition: transform 0.3s ease;
+    margin-bottom: 20px;
+    border-radius: 8px;
 }
 
-.product-card:hover {
-    transform: translateY(-5px);
-}
-
-.image-container {
-    height: 180px;
+.image-wrapper {
+    text-align: center;
+    height: 160px;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 15px;
+    background-color: #fafafa;
+    border-radius: 4px;
+    overflow: hidden;
 }
 
 .product-image {
@@ -85,22 +69,12 @@ const toggleFavorite = () => {
 
 .product-title {
     font-size: 1rem;
-    margin: 10px 0;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.card-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 15px;
+    margin: 10px 0 5px;
 }
 
 .product-price {
-    font-size: 1.25rem;
     font-weight: bold;
-    color: var(--el-color-primary);
+    color: #2c3e50;
+    margin-bottom: 10px;
 }
 </style>

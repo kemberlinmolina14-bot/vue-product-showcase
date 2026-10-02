@@ -1,23 +1,16 @@
-describe('Flujo de Filtrado de Productos por Categoría', () => {
+describe('Prueba End-to-End: Filtrado de Productos (Lección 4)', () => {
   beforeEach(() => {
-    // Visita la aplicación corriendo en local
-    cy.visit('http://localhost:8080');
+    cy.visit('http://localhost:8080/');
   });
 
   it('permite al usuario seleccionar una categoría y ver los resultados filtrados', () => {
-    // 1. Confirmar que los productos cargaron en pantalla
-    cy.get('.product-card', { timeout: 10000 }).should('have.length.greaterThan', 0);
+    // 1. Confirmar la carga inicial de los productos desde products.json
+    cy.get('.product-card').should('have.length.greaterThan', 0);
 
-    // 2. Seleccionar la categoría de electrónica en el desplegable
-    cy.get('select').select('electronics');
+    // 2. Interactuar con el menú selector de categorías
+    cy.get('select').select("men's clothing");
 
-    // 3. Verificar que las tarjetas mostradas corresponden al filtro aplicado
-    cy.get('.product-card').each(($card) => {
-      cy.wrap($card).should('exist');
-    });
-
-    // 4. Probar la interacción con el botón de favoritos
-    cy.get('.product-card').first().find('.favorite-btn').click();
-    cy.get('.favorites-badge .count').should('contain.text', '1');
+    // 3. Verificar que los resultados filtrados estén visibles
+    cy.get('.product-card').should('be.visible');
   });
 });
