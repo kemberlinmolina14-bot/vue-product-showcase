@@ -15,6 +15,7 @@ import Footer from './components/Footer.vue';
 </script>
 
 <style>
+/* Estilos globales */
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   color: #2c3e50;
@@ -23,7 +24,36 @@ import Footer from './components/Footer.vue';
   flex-direction: column;
 }
 
-main {
-  flex: 1;
+/* Variables para Modo Oscuro */
+:root.dark-mode {
+  background-color: #121212;
+  color: #e0e0e0;
+}
+
+:root.dark-mode #app {
+  background-color: #121212;
+  color: #e0e0e0;
+}
+
+:root.dark-mode .header {
+  background-color: #1e1e1e !important;
+  border-bottom-color: #333;
+}
+
+:root.dark-mode .product-card,
+:root.dark-mode .el-card {
+  background-color: #1e1e1e !important;
+  color: #ffffff !important;
+  border-color: #333 !important;
+}
+
+:root.dark-mode .product-title,
+:root.dark-mode .product-price {
+  color: #ffffff !important;
+}
+
+:root.dark-mode .theme-toggle-btn {
+  color: #ffffff;
+  border-color: #555;
 }
 </style>
